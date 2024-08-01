@@ -16,13 +16,41 @@ function Start() {
             "View Roles",
             "View Employees",
             "Add a Department",
-            "Add a role",
+            "Add a Role",
             "Add an Employee",
             "Update an Employee Record",
             "Exit"
         ]
     }).then((answers) => {
         console.log(answers.mainMenuSelection);
+        switch (answers.selection) {
+            case "View Departments":
+
+                break;
+            case "View Roles":
+
+                break;
+            case "View Employees":
+
+                break;
+            case "Add a Department":
+
+                break;
+            case "Add a Role":
+
+                break;
+            case "Add an Employee":
+
+                break;
+            case "Update an Employee Record":
+
+                break;
+            case "Exit":
+                Exit();
+            break;
+            default:
+                break;
+        }
         
     });
 }
