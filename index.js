@@ -21,7 +21,7 @@ function Start() {
             "Update an Employee Record",
             "Exit"
         ]
-    }).then((answers) => {
+    }).then(function (answers) {
         console.log(answers.selection);
         switch (answers.selection) {
             case "View Departments":
@@ -80,6 +80,15 @@ function viewEmployees() {
 function addDepartment() {
 
     console.log("ad");
+    const prompt = inq.createPromptModule();
+
+    prompt({
+        type: "input",
+        message: "Enter the name of the new department",
+        name: "newwDepartment",
+    }).then(function (answer) {
+        // Add parameterized query here
+    })
 
 }
 
@@ -109,4 +118,4 @@ function Exit() {
     return;
 }
 
-Start();
+    Start();
