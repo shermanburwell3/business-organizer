@@ -3,6 +3,22 @@ const {Pool} = require('pg');
 
 //TODO: Add start funtion, bringing user to main menu
 
+function Start() {
+    inq.createPromptModule({
+        type: "list",
+        message: "Please choose an option",
+        choices: [
+            "View Departments",
+            "View Roles",
+            "View Employees",
+            "Add a Department",
+            "Add a role",
+            "Add an Employee",
+            "Update an Employee Record",
+            "Exit"
+        ]
+    })
+}
 
 
 //TODO: Add view departments function
@@ -30,3 +46,7 @@ const {Pool} = require('pg');
 
 
 //TODO: Add update employee function
+
+
+
+//TODO: Add exit function
