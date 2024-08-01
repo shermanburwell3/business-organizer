@@ -1,7 +1,7 @@
 const inq = require('inquirer');
 const {Pool} = require('pg');
 
-//TODO: Add start funtion, bringing user to main menu
+// Start function, bringing user to main menu
 
 
 function Start() {
@@ -55,38 +55,56 @@ function Start() {
     });
 }
 
-
-
-//TODO: Add view departments function
-
-
-
-//TODO: Add view roles function
+// View departments function
+function viewDepartments() {
 
 
 
-//TODO: Add view employees function
+}
+
+// View roles function
+function viewRoles() {
 
 
 
-//TODO: Add add department function
+}
+
+// View employees function
+function viewEmployees() {
 
 
 
-//TODO: Add add role function
+}
+
+//Add department function
+function addDepartment() {
 
 
 
-//TODO: Add add employee function
+}
+
+// Add role function
+function addRole() {
 
 
 
-//TODO: Add update employee function
+}
+
+// Add employee function
+function addEmployee() {
 
 
 
-//TODO: Add exit function
+}
 
+// Update employee function
+function updateEmployee() {
+
+
+
+}
+
+// Exit function
 function Exit() {
     return;
 }
