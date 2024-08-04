@@ -3,6 +3,8 @@ const {Pool} = require('pg');
 
 // Start function, bringing user to main menu
 
+//temp postgres pwd Time123
+
 
 function Start() {
     const prompt = inq.createPromptModule();
