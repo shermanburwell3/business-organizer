@@ -142,7 +142,8 @@ function viewEmployees() {
             });
 
             rows.forEach(row => {
-                table.push([row.id, row.first_name, row.last_name, row.role_id, row.manager_id]);
+                const managerId = row.manager_id ? row.manager_id : "None";
+                table.push([row.id, row.first_name, row.last_name, row.role_id, managerId]);
             });
             console.log('\n');
             console.log(table.toString());
@@ -155,7 +156,6 @@ function viewEmployees() {
 //Add department function
 function addDepartment() {
 
-    console.log("ad");
     const prompt = inq.createPromptModule();
 
     prompt({
@@ -163,8 +163,13 @@ function addDepartment() {
         message: "Enter the name of the new department",
         name: "newDepartment",
     }).then(function (answer) {
-        // Add parameterized query here
-    })
+        pool.query(`INSERT INTO department (name) VALUES ($1)`, [answer.newDepartment], function (err, {rows}) {
+            if (err) {
+                console.log(err);
+              }
+              console.log(`${answer.newDepartment} has been added!`);
+        })
+    });
 
 }
 
