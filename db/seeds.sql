@@ -1,4 +1,8 @@
-INSERT INTO department (name)
+-- INSERT INTO department (name)
+-- VALUES
+--     ('Center Store'),
+--     ('Perishables');
+
+INSERT INTO role (title, salary, department_id)
 VALUES
-    ('Center Store'),
-    ('Perishables');
+    ('Director', 80000, 1);

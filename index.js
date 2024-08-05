@@ -89,6 +89,24 @@ function viewDepartments() {
 function viewRoles() {
 
     console.log("vr");
+    console.log("Viewing all roles...\n");
+
+    pool.query(`SELECT * FROM role`, function (err, {rows}) {
+        if (err) {
+            console.log(err);
+        }
+
+        if (rows.length === 0) {
+            console.log("No roles found.");
+        } else {
+            console.log('\n');
+            console.log("Role ID | Title | Salary | Department ID");
+            console.log("----------------------------------------");
+            rows.forEach(row => {
+                console.log(`${row.id} | ${row.title} | ${row.salary} | ${row.department_id}`);
+            });
+        }
+    });
 
 }
 
@@ -108,7 +126,7 @@ function addDepartment() {
     prompt({
         type: "input",
         message: "Enter the name of the new department",
-        name: "newwDepartment",
+        name: "newDepartment",
     }).then(function (answer) {
         // Add parameterized query here
     })
