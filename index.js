@@ -1,9 +1,18 @@
 const inq = require('inquirer');
 const {Pool} = require('pg');
 
-// Start function, bringing user to main menu
+// Connect to database
+const pool = new Pool(
+    {
+        user: 'postgres',
+        password: 'Time123',
+        host: 'localhost',
+        database: 'company_db'
+    },
+    console.log("Connected to comapny database!")
+);
 
-//temp postgres pwd Time123
+// Start function, bringing user to main menu
 
 
 function Start() {
@@ -120,4 +129,5 @@ function Exit() {
     return;
 }
 
-    Start();
+pool.connect();
+Start();
