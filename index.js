@@ -12,7 +12,7 @@ const pool = new Pool(
         host: 'localhost',
         database: 'company_db'
     },
-    console.log("Connected to comapny database!")
+    console.log("Connected to company database!")
 );
 
 // Start function, bringing user to main menu
@@ -207,9 +207,38 @@ function addRole() {
 
 // Add employee function
 function addEmployee() {
+    const prompt = inq.createPromptModule();
 
-    console.log("ae");
-
+    prompt([
+        {
+            type: "input",
+            message: "Enter the employee's first name",
+            name: "firstName",
+        },
+        {
+            type: "input",
+            message: "Enter the employee's last name",
+            name: "lastName",
+        },
+        {
+            type: "input",
+            message: "Enter the employee's role ID",
+            name: "roleId",
+        },
+        {
+            type: "input",
+            message: "Enter the employee's manager ID (if applicable)",
+            name: "managerId",
+        }
+    ]).then(function (answers) {
+        pool.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)`, [answers.firstName, answers.lastName, answers.roleId, answers.managerId], function (err, {rows}) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(`${answers.firstName} ${answers.lastName} has been added as a new employee!`);
+            Start();
+        });
+    });
 }
 
 // Update employee function
