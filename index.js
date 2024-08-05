@@ -66,8 +66,6 @@ function Start() {
 }
 
 // View departments function
-assistant icon
-Certainly! You can create a similar function for viewing departments using cli-table for formatting. Here's an example function for viewing departments in a formatted table:
 
 const Table = require('cli-table');
 
