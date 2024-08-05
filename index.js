@@ -168,16 +168,41 @@ function addDepartment() {
                 console.log(err);
               }
               console.log(`${answer.newDepartment} has been added!`);
+              Start();
         })
     });
-
 }
 
 // Add role function
 function addRole() {
 
-    console.log("ar");
+    const prompt = inq.createPromptModule();
 
+    prompt([
+        {
+            type: "input",
+            message: "Enter the title of the new role",
+            name: "newRoleTitle",
+        },
+        {
+            type: "input",
+            message: "Enter the salary for the new role",
+            name: "newRoleSalary",
+        },
+        {
+            type: "input",
+            message: "Enter the department ID for the new role",
+            name: "newRoleDepartmentId",
+        }
+    ]).then(function (answers) {
+        pool.query(`INSERT INTO role (title, salary, department_id) VALUES ($1, $2, $3)`, [answers.newRoleTitle, answers.newRoleSalary, answers.newRoleDepartmentId], function (err, {rows}) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(`${answers.newRoleTitle} has been added as a new role!`);
+            Start();
+        });
+    });
 }
 
 // Add employee function
