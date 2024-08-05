@@ -70,6 +70,12 @@ function Start() {
 function viewDepartments() {
 
     console.log("vd");
+    pool.query(`SELECT * FROM department`, function (err, {rows}) {
+        if (err) {
+            console.log(err);
+        }
+        console.log(rows);
+    });
 
 }
 
