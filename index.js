@@ -67,8 +67,6 @@ function Start() {
 
 // View departments function
 
-const Table = require('cli-table');
-
 function viewDepartments() {
     console.log("Viewing all departments...\n");
 
@@ -88,11 +86,13 @@ function viewDepartments() {
             rows.forEach(row => {
                 table.push([row.id, row.name]);
             });
-
+            console.log('\n');
             console.log(table.toString());
         }
+
+        Start();
+
     });
-    Start();
 }
 
 // View roles function
@@ -115,18 +115,41 @@ function viewRoles() {
             rows.forEach(row => {
                 table.push([row.id, row.title, row.salary, row.department_id]);
             });
-
+            console.log('\n');
             console.log(table.toString());
         }
+
+        Start();
+
     });
-    Start();
 }
 
 // View employees function
 function viewEmployees() {
+    console.log("Viewing all employees...\n");
 
-    console.log("ve");
+    pool.query(`SELECT * FROM employee`, function (err, {rows}) {
+        if (err) {
+            console.log(err);
+        }
 
+        if (rows.length === 0) {
+            console.log("No employees found.");
+        } else {
+            const table = new Table({
+                head: ['Employee ID', 'First Name', 'Last Name', 'Role ID', 'Manager ID'],
+                colWidths: [15, 20, 20, 15, 15]
+            });
+
+            rows.forEach(row => {
+                table.push([row.id, row.first_name, row.last_name, row.role_id, row.manager_id]);
+            });
+            console.log('\n');
+            console.log(table.toString());
+
+        }
+            Start();
+    });
 }
 
 //Add department function
