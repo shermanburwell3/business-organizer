@@ -227,7 +227,7 @@ function addEmployee() {
         },
         {
             type: "input",
-            message: "Enter the employee's manager ID (if applicable)",
+            message: "Enter the employee's manager ID (if applicable) or leave blank and press ENTER for None",
             name: "managerId",
         }
     ]).then(function (answers) {
@@ -244,10 +244,29 @@ function addEmployee() {
 }
 
 // Update employee function
-function updateEmployee() {
+function updateEmployeeRole() {
+    const prompt = inq.createPromptModule();
 
-    console.log("ue");
-
+    prompt([
+        {
+            type: "input",
+            message: "Enter the ID of the employee you want to update",
+            name: "employeeId",
+        },
+        {
+            type: "input",
+            message: "Enter the new role ID for the employee",
+            name: "newRoleId",
+        }
+    ]).then(function (answers) {
+        pool.query(`UPDATE employee SET role_id = $1 WHERE id = $2`, [answers.newRoleId, answers.employeeId], function (err, {rows}) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(`Employee with ID ${answers.employeeId} has been updated with a new role ID: ${answers.newRoleId}`);
+            Start();
+        });
+    });
 }
 
 pool.connect();
