@@ -29,8 +29,7 @@ function Start() {
             "Add a Department",
             "Add a Role",
             "Add an Employee",
-            "Update an Employee Record",
-            "Exit"
+            "Update an Employee Record"
         ]
     }).then(function (answers) {
         console.log(answers.selection);
@@ -56,9 +55,6 @@ function Start() {
             case "Update an Employee Record":
                 updateEmployee();
                 break;
-            case "Exit":
-                Exit();
-            break;
             default:
                 break;
         }
@@ -68,16 +64,25 @@ function Start() {
 
 // View departments function
 function viewDepartments() {
+    console.log("Viewing all departments...\n");
 
-    console.log("vd");
     pool.query(`SELECT * FROM department`, function (err, {rows}) {
         if (err) {
             console.log(err);
         }
-        console.log(rows);
-    });
 
-    
+        if (rows.length === 0) {
+            console.log("No departments found.");
+        } else {
+            console.log('\n');
+            console.log("Department ID | Department Name");
+            console.log("--------------------------------");
+            rows.forEach(row => {
+                console.log(`${row.id} | ${row.name}`);
+            });
+        }
+    });
+    Start();
 }
 
 // View roles function
@@ -128,18 +133,6 @@ function addEmployee() {
 function updateEmployee() {
 
     console.log("ue");
-
-}
-
-function renderDepartments() {
-    
-}
-
-function renderRoles() {
-
-}
-
-function renderEmployees() {
 
 }
 
