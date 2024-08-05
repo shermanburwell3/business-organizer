@@ -231,7 +231,9 @@ function addEmployee() {
             name: "managerId",
         }
     ]).then(function (answers) {
-        pool.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)`, [answers.firstName, answers.lastName, answers.roleId, answers.managerId], function (err, {rows}) {
+        const managerId = answers.managerId.trim() === "" ? null : answers.managerId;
+
+        pool.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)`, [answers.firstName, answers.lastName, answers.roleId, managerId], function (err, {rows}) {
             if (err) {
                 console.log(err);
             }
