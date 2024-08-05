@@ -1,6 +1,9 @@
 const inq = require('inquirer');
 const {Pool} = require('pg');
 
+// Helps formatting the tables
+const Table = require('cli-table');
+
 // Connect to database
 const pool = new Pool(
     {
@@ -63,6 +66,11 @@ function Start() {
 }
 
 // View departments function
+assistant icon
+Certainly! You can create a similar function for viewing departments using cli-table for formatting. Here's an example function for viewing departments in a formatted table:
+
+const Table = require('cli-table');
+
 function viewDepartments() {
     console.log("Viewing all departments...\n");
 
@@ -74,12 +82,16 @@ function viewDepartments() {
         if (rows.length === 0) {
             console.log("No departments found.");
         } else {
-            console.log('\n');
-            console.log("Department ID | Department Name");
-            console.log("--------------------------------");
-            rows.forEach(row => {
-                console.log(`${row.id} | ${row.name}`);
+            const table = new Table({
+                head: ['Department ID', 'Department Name'],
+                colWidths: [15, 30]
             });
+
+            rows.forEach(row => {
+                table.push([row.id, row.name]);
+            });
+
+            console.log(table.toString());
         }
     });
     Start();
@@ -87,8 +99,6 @@ function viewDepartments() {
 
 // View roles function
 function viewRoles() {
-
-    console.log("vr");
     console.log("Viewing all roles...\n");
 
     pool.query(`SELECT * FROM role`, function (err, {rows}) {
@@ -99,15 +109,19 @@ function viewRoles() {
         if (rows.length === 0) {
             console.log("No roles found.");
         } else {
-            console.log('\n');
-            console.log("Role ID | Title | Salary | Department ID");
-            console.log("----------------------------------------");
-            rows.forEach(row => {
-                console.log(`${row.id} | ${row.title} | ${row.salary} | ${row.department_id}`);
+            const table = new Table({
+                head: ['Role ID', 'Title', 'Salary', 'Department ID'],
+                colWidths: [10, 30, 15, 15]
             });
+
+            rows.forEach(row => {
+                table.push([row.id, row.title, row.salary, row.department_id]);
+            });
+
+            console.log(table.toString());
         }
     });
-
+    Start();
 }
 
 // View employees function
