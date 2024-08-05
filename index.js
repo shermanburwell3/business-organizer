@@ -77,6 +77,7 @@ function viewDepartments() {
         console.log(rows);
     });
 
+    
 }
 
 // View roles function
@@ -130,9 +131,16 @@ function updateEmployee() {
 
 }
 
-// Exit function
-function Exit() {
-    return;
+function renderDepartments() {
+    
+}
+
+function renderRoles() {
+
+}
+
+function renderEmployees() {
+
 }
 
 pool.connect();
