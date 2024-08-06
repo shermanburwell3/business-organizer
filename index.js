@@ -226,38 +226,62 @@ function addRole() {
 
 // Add employee function
 function addEmployee() {
-    const prompt = inq.createPromptModule();
+    console.log("Adding a new employee...\n");
 
-    prompt([
-        {
-            type: "input",
-            message: "Enter the employee's first name",
-            name: "firstName",
-        },
-        {
-            type: "input",
-            message: "Enter the employee's last name",
-            name: "lastName",
-        },
-        {
-            type: "input",
-            message: "Enter the employee's role ID",
-            name: "roleId",
-        },
-        {
-            type: "input",
-            message: "Enter the employee's manager ID (if applicable) or leave blank and press ENTER for None",
-            name: "managerId",
+    pool.query(`SELECT id, title FROM role`, function (err, {rows: roleRows}) {
+        if (err) {
+            console.log(err);
         }
-    ]).then(function (answers) {
-        const managerId = answers.managerId.trim() === "" ? null : answers.managerId;
 
-        pool.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)`, [answers.firstName, answers.lastName, answers.roleId, managerId], function (err, {rows}) {
+        const roleChoices = roleRows.map(row => ({
+            name: row.title,
+            value: row.id
+        }));
+
+        pool.query(`SELECT id, first_name, last_name FROM employee`, function (err, {rows: employeeRows}) {
             if (err) {
                 console.log(err);
             }
-            console.log(`${answers.firstName} ${answers.lastName} has been added as a new employee!`);
-            Start();
+
+            const employeeChoices = employeeRows.map(row => ({
+                name: `${row.first_name} ${row.last_name}`,
+                value: row.id
+            }));
+
+            const prompt = inq.createPromptModule();
+
+            prompt([
+                {
+                    type: "input",
+                    message: "Enter the employee's first name",
+                    name: "firstName",
+                },
+                {
+                    type: "input",
+                    message: "Enter the employee's last name",
+                    name: "lastName",
+                },
+                {
+                    type: "list",
+                    message: "Select the employee's role",
+                    name: "roleId",
+                    choices: roleChoices
+                },
+                {
+                    type: "list",
+                    message: "Select the employee's manager (if applicable)",
+                    name: "managerId",
+                    choices: [...employeeChoices, { name: "None", value: null }]
+                }
+            ]).then(function (answers) {
+                pool.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)`, [answers.firstName, answers.lastName, answers.roleId, answers.managerId], function (err, {rows}) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    console.log(`${answers.firstName} ${answers.lastName} has been added as a new employee!`);
+                    Start();
+                });
+            });
         });
     });
 }
