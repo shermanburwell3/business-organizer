@@ -32,7 +32,7 @@ function Start() {
             "Add a Department",
             "Add a Role",
             "Add an Employee",
-            "Update an Employee Record"
+            "Update an Employee Role"
         ]
     }).then(function (answers) {
         console.log(answers.selection);
@@ -55,7 +55,7 @@ function Start() {
             case "Add an Employee":
                 addEmployee();
                 break;
-            case "Update an Employee Record":
+            case "Update an Employee Role":
                 updateEmployee();
                 break;
             default:
