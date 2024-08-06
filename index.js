@@ -99,7 +99,9 @@ function viewDepartments() {
 function viewRoles() {
     console.log("Viewing all roles...\n");
 
-    pool.query(`SELECT * FROM role`, function (err, {rows}) {
+    pool.query(`SELECT role.id, role.title, role.salary, department.name AS department_name
+                FROM role
+                INNER JOIN department ON role.department_id = department.id`, function (err, {rows}) {
         if (err) {
             console.log(err);
         }
@@ -108,12 +110,12 @@ function viewRoles() {
             console.log("No roles found.");
         } else {
             const table = new Table({
-                head: ['Role ID', 'Title', 'Salary', 'Department ID'],
-                colWidths: [10, 30, 15, 15]
+                head: ['Role ID', 'Title', 'Salary', 'Department Name'],
+                colWidths: [10, 30, 15, 30]
             });
 
             rows.forEach(row => {
-                table.push([row.id, row.title, row.salary, row.department_id]);
+                table.push([row.id, row.title, row.salary, row.department_name]);
             });
             console.log('\n');
             console.log(table.toString());
@@ -128,7 +130,12 @@ function viewRoles() {
 function viewEmployees() {
     console.log("Viewing all employees...\n");
 
-    pool.query(`SELECT * FROM employee`, function (err, {rows}) {
+    pool.query(`SELECT e.id, e.first_name, e.last_name, r.title AS role_title, r.salary, d.name AS department_name, 
+                CONCAT(m.first_name, ' ', m.last_name) AS manager_name
+                FROM employee e
+                INNER JOIN role r ON e.role_id = r.id
+                INNER JOIN department d ON r.department_id = d.id
+                LEFT JOIN employee m ON e.manager_id = m.id`, function (err, {rows}) {
         if (err) {
             console.log(err);
         }
@@ -137,19 +144,18 @@ function viewEmployees() {
             console.log("No employees found.");
         } else {
             const table = new Table({
-                head: ['Employee ID', 'First Name', 'Last Name', 'Role ID', 'Manager ID'],
-                colWidths: [15, 20, 20, 15, 15]
+                head: ['Employee ID', 'First Name', 'Last Name', 'Role Title', 'Salary', 'Department', 'Manager'],
+                colWidths: [15, 20, 20, 30, 15, 20, 30]
             });
 
             rows.forEach(row => {
-                const managerId = row.manager_id ? row.manager_id : "None";
-                table.push([row.id, row.first_name, row.last_name, row.role_id, managerId]);
+                table.push([row.id, row.first_name, row.last_name, row.role_title, row.salary, row.department_name, row.manager_name]);
             });
             console.log('\n');
             console.log(table.toString());
 
         }
-            Start();
+        Start();
     });
 }
 
@@ -244,7 +250,7 @@ function addEmployee() {
 }
 
 // Update employee function
-function updateEmployeeRole() {
+function updateEmployee() {
     const prompt = inq.createPromptModule();
 
     prompt([
