@@ -264,26 +264,40 @@ function addEmployee() {
 
 // Update employee function
 function updateEmployee() {
-    const prompt = inq.createPromptModule();
+    console.log("Updating an employee...\n");
 
-    prompt([
-        {
-            type: "input",
-            message: "Enter the ID of the employee you want to update",
-            name: "employeeId",
-        },
-        {
-            type: "input",
-            message: "Enter the new role ID for the employee",
-            name: "newRoleId",
+    pool.query(`SELECT id, title FROM role`, function (err, {rows}) {
+        if (err) {
+            console.log(err);
         }
-    ]).then(function (answers) {
-        pool.query(`UPDATE employee SET role_id = $1 WHERE id = $2`, [answers.newRoleId, answers.employeeId], function (err, {rows}) {
-            if (err) {
-                console.log(err);
+
+        const roleChoices = rows.map(row => ({
+            name: row.title,
+            value: row.id
+        }));
+
+        const prompt = inq.createPromptModule();
+
+        prompt([
+            {
+                type: "input",
+                message: "Enter the ID of the employee you want to update",
+                name: "employeeId",
+            },
+            {
+                type: "list",
+                message: "Select the new role for the employee",
+                name: "newRoleId",
+                choices: roleChoices
             }
-            console.log(`Employee with ID ${answers.employeeId} has been updated with a new role ID: ${answers.newRoleId}`);
-            Start();
+        ]).then(function (answers) {
+            pool.query(`UPDATE employee SET role_id = $1 WHERE id = $2`, [answers.newRoleId, answers.employeeId], function (err, {rows}) {
+                if (err) {
+                    console.log(err);
+                }
+                console.log(`Employee with ID ${answers.employeeId} has been updated with a new role.`);
+                Start();
+            });
         });
     });
 }
